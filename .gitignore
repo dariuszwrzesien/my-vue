@@ -1,0 +1,23 @@
+.DS_Store
+fundamentals/build-a-bot/node_modules
+fundamentals/build-a-bot/dist
+
+
+# local env files
+fundamentals/build-a-bot/.env.local
+fundamentals/build-a-bot/.env.*.local
+
+# Log files
+fundamentals/build-a-bot/npm-debug.log*
+fundamentals/build-a-bot/yarn-debug.log*
+fundamentals/build-a-bot/yarn-error.log*
+fundamentals/build-a-bot/pnpm-debug.log*
+
+# Editor directories and files
+fundamentals/build-a-bot/.idea
+fundamentals/build-a-bot/.vscode
+fundamentals/build-a-bot/*.suo
+fundamentals/build-a-bot/*.ntvs*
+fundamentals/build-a-bot/*.njsproj
+fundamentals/build-a-bot/*.sln
+fundamentals/build-a-bot/*.sw?
