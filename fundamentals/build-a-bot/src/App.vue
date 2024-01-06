@@ -10,19 +10,19 @@
     </nav>
   </header>
   <main>
-    <HomePage msg="Welcome to Your Vue.js + TypeScript App"/>
+    <!-- <HomePage msg="Welcome to Your Vue.js + TypeScript App"/> -->
+    <RobotBuilder msg="Welcome to Your Vue.js + TypeScript App"/>
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import HomePage from './home/HomePage.vue';
+import RobotBuilder from './build/RobotBuilder.vue';
 
 export default defineComponent({
   name: 'App',
-  components: {
-    HomePage,
-  },
+  components: { RobotBuilder },
 });
 </script>
 
