@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import HomePage from './home/HomePage.vue';
+import RobotBuilder from './build/RobotBuilder.vue';
+
+</script>
+
 <template>
   <header>
     <nav>
@@ -15,22 +21,24 @@
   </main>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import HomePage from './home/HomePage.vue';
-import RobotBuilder from './build/RobotBuilder.vue';
-
-export default defineComponent({
-  name: 'App',
-  components: { RobotBuilder },
-});
-</script>
-
 <style>
 body {
   background: linear-gradient(to bottom, #555, #999);
   background-attachment: fixed;
 }
+header {
+  background-color: #999;
+  width: 1084px;
+  margin: 0 auto;
+}
+ul {
+  padding: 3px;
+  display: flex;
+}
+</style>
+
+<style scoped>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -42,15 +50,6 @@ main {
   background-color: white;
   width: 1024px;
   min-height: 300px;
-}
-header {
-  background-color: #999;
-  width: 1084px;
-  margin: 0 auto;
-}
-ul {
-  padding: 3px;
-  display: flex;
 }
 .nav-item {
   display: inline-block;
