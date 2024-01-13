@@ -18,8 +18,8 @@ import SearchTerm from './search/SearchTerm.vue';
   </header>
   <main>
     <!-- <HomePage msg="Welcome to Your Vue.js + TypeScript App"/> -->
-    <!-- <RobotBuilder/> -->
-    <SearchTerm />
+    <RobotBuilder/>
+    <!-- <SearchTerm /> -->
   </main>
 </template>
 
