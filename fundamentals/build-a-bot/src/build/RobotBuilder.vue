@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import {
+  computed, ref, onMounted, onUnmounted, onUpdated,
+} from 'vue';
 import { parts as availableParts, type PartType } from '../data/parts';
 
 type Robot = {
@@ -11,6 +13,19 @@ type Robot = {
 }
 
 type Cart = Robot & {totalCost: number}
+
+/**
+ * Life cycle hooks
+ */
+onMounted(() => {
+  console.log('the component is now mounted.');
+});
+onUpdated(() => {
+  console.log('the component is now updated.');
+});
+onUnmounted(() => {
+  console.log('the component is now unmounted.');
+});
 
 const cart = ref([] as Cart[]);
 const selectedHeadIndex = ref(0);
@@ -117,7 +132,7 @@ const addToCard = () => {
   <div>
     <button class="add-to-cart" @click="addToCard()">Add to Cart</button>
     <div class="top-row">
-      <div class="top part">
+      <div :class="[{'sale-border': selectedRobot.head.onSale}, 'top', 'part']">
         <div class="robot-name">{{ selectedRobot.head.title }}
           <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
         </div>
@@ -174,15 +189,17 @@ const addToCard = () => {
     </div>
   </div>
 </template>
-<style scoped>
+<style lang="scss" scoped>
 .part {
   position: relative;
   width: 165px;
   height: 165px;
   border: 3px solid #aaa;
 }
-.part img {
-  width: 165px;
+.part {
+  img {
+    width: 165px;
+  }
 }
 .top-row {
   display: flex;
@@ -284,5 +301,8 @@ td, th {
 }
 .cost {
   text-align: right;
+}
+.sale-border {
+  border: 3px solid red
 }
 </style>

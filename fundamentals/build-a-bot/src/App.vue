@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import HomePage from './home/HomePage.vue';
 import RobotBuilder from './build/RobotBuilder.vue';
+import SearchTerm from './search/SearchTerm.vue';
 
 </script>
 
@@ -17,7 +18,8 @@ import RobotBuilder from './build/RobotBuilder.vue';
   </header>
   <main>
     <!-- <HomePage msg="Welcome to Your Vue.js + TypeScript App"/> -->
-    <RobotBuilder msg="Welcome to Your Vue.js + TypeScript App"/>
+    <!-- <RobotBuilder/> -->
+    <SearchTerm />
   </main>
 </template>
 
@@ -40,7 +42,7 @@ ul {
 <style scoped>
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
