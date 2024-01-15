@@ -1,9 +1,26 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
-import { parts as availableParts } from '../data/parts';
+import { type PartType } from '@/data/parts';
+import {
+  computed, ref, defineProps, defineEmits,
+} from 'vue';
+
+type PatSelectorProps = {
+  parts: PartType[]
+  position: 'top' | 'left' | 'center' | 'right' | 'bottom'
+}
+
+const props = defineProps<PatSelectorProps>();
+
+const emit = defineEmits([
+  'partSelected',
+]);
 
 const selectedPartIndex = ref(0);
-const parts = availableParts.heads;
+const selectedPart = computed(() => props.parts[selectedPartIndex.value]);
+
+function emitSelectedPart() {
+  emit('partSelected', selectedPart.value);
+}
 
 function getPreviousValidIndex(index: number, length: number) {
   const deprecatedIndex = index - 1;
@@ -18,22 +35,24 @@ function getNextValidIndex(index: number, length:number) {
 function selectNextPart() {
   selectedPartIndex.value = getNextValidIndex(
     selectedPartIndex.value,
-    parts.length,
+    props.parts.length,
   );
+  emitSelectedPart();
 }
 function selectPreviousPart() {
   selectedPartIndex.value = getPreviousValidIndex(
     selectedPartIndex.value,
-    parts.length,
+    props.parts.length,
   );
+  emitSelectedPart();
 }
 
-const selectedPart = computed(() => parts[selectedPartIndex.value]);
+emitSelectedPart();
 
 </script>
 
 <template>
-    <div class="part">
+    <div class="part" :class="props.position">
         <img :alt="selectedPart.src"
         :src="selectedPart.src" title="" />
         <button class="prev-selector" @click="selectPreviousPart()"></button>

@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import {
-  computed, ref, onMounted, onUnmounted, onUpdated,
+  ref, onMounted, onUnmounted, onUpdated,
 } from 'vue';
 import { parts as availableParts, type PartType } from '../data/parts';
 import PartSelector from './PartSelector.vue';
 
 type Robot = {
-  head: PartType,
-  leftArm: PartType,
-  torso: PartType,
-  rightArm: PartType,
-  base: PartType,
+  head: PartType | null,
+  leftArm: PartType | null,
+  torso: PartType | null,
+  rightArm: PartType | null,
+  base: PartType | null,
 }
 
 type Cart = Robot & {totalCost: number}
@@ -29,49 +29,59 @@ onUnmounted(() => {
 });
 
 const cart = ref([] as Cart[]);
-const selectedHeadIndex = ref(0);
-const selectedLeftArmIndex = ref(0);
-const selectedTorsoIndex = ref(0);
-const selectedRightArmIndex = ref(0);
-const selectedBaseIndex = ref(0);
+const selectedRobot = ref({
+  head: null,
+  leftArm: null,
+  torso: null,
+  rightArm: null,
+  base: null,
+} as Robot);
 
-const selectedRobot = computed(() => ({
-  head: availableParts.heads[selectedHeadIndex.value],
-  leftArm: availableParts.arms[selectedLeftArmIndex.value],
-  torso: availableParts.torsos[selectedTorsoIndex.value],
-  rightArm: availableParts.arms[selectedRightArmIndex.value],
-  base: availableParts.base[selectedBaseIndex.value],
-}));
-
-const addToCard = () => {
-  const robot = selectedRobot.value;
+const addToCard = (robot: Robot) => {
   const totalCost = [
     robot.head,
     robot.leftArm,
     robot.torso,
     robot.rightArm,
     robot.base,
-  ].reduce((acc, curr) => acc + curr.cost, 0);
+  ].reduce((acc, curr) => acc + (curr?.cost ?? 0), 0);
   cart.value.push({ ...robot, totalCost });
 };
-
 </script>
 
 <template>
-  <div>
-    <button class="add-to-cart" @click="addToCard()">Add to Cart</button>
+  <div class="container">
+    <div class="robot">
     <div class="top-row">
-     <PartSelector />
+     <PartSelector
+      :parts="availableParts.heads"
+      position="top"
+      @partSelected="(part) => selectedRobot.head = part"
+    />
     </div>
     <div class="middle-row">
-      <PartSelector />
-      <PartSelector />
-      <PartSelector />
+      <PartSelector
+      :parts="availableParts.arms"
+      position="left"
+      @partSelected="(part: PartType) => {selectedRobot.leftArm = part}"
+    />
+      <PartSelector :parts="availableParts.torsos"
+      position="center"
+      @partSelected="(part: PartType) => selectedRobot.torso = part"
+    />
+      <PartSelector :parts="availableParts.arms"
+      position="right"
+      @partSelected="(part: PartType) => selectedRobot.rightArm = part"
+    />
     </div>
     <div class="bottom-row">
-      <PartSelector />
+      <PartSelector :parts="availableParts.base"
+      position="bottom"
+      @partSelected="(part: PartType) => selectedRobot.base = part"
+    />
     </div>
-    <div>
+    </div>
+    <div class="cart">
       <h1>Cart</h1>
       <table>
         <thead>
@@ -82,15 +92,53 @@ const addToCard = () => {
         </thead>
         <tbody>
           <tr v-for="(robot, index) in cart" :key="index" >
-            <td>{{robot?.head.title}}</td>
+            <td>{{robot?.head?.title}}</td>
             <td class="cost">{{ robot.totalCost }}</td>
           </tr>
         </tbody>
       </table>
     </div>
+    <div class="preview">
+      <div class="preview-content">
+        <div class="top-row">
+          <img alt="head" :src="selectedRobot.head?.src"/>
+        </div>
+        <div class="middle-row">
+          <img alt="left" :src="selectedRobot.leftArm?.src" class="rotate-left"/>
+          <img alt="center" :src="selectedRobot.torso?.src"/>
+          <img alt="right" :src="selectedRobot.rightArm?.src" class="rotate-right"/>
+        </div>
+        <div class="bottom-row">
+          <img alt="base" :src="selectedRobot.base?.src"/>
+        </div>
+      </div>
+      <button class="add-to-cart" @click="addToCard(selectedRobot)">Add to Cart</button>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  row-gap: 20px;
+}
+.robot {
+  flex: 1 100%;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #aaa
+}
+.cart {
+  order: 1;
+  width: 400px;
+}
+
+.preview {
+  order: 2;
+  width: 210px;
+  height: 210px;
+}
 .part {
   position: relative;
   width: 165px;
@@ -192,6 +240,7 @@ const addToCard = () => {
   color: #F00
 }
 .add-to-cart {
+  width: 210px;
   padding: 3px;
   font-size: 16px;
 }
@@ -205,5 +254,18 @@ td, th {
 }
 .sale-border {
   border: 3px solid red
+}
+.preview-content {
+  border: 1px solid #999;
+}
+.preview img {
+  width: 50px;
+  height: 50px;
+}
+.rotate-right {
+  transform: rotate(90deg);
+}
+.rotate-left {
+  transform: rotate(-90deg);
 }
 </style>
