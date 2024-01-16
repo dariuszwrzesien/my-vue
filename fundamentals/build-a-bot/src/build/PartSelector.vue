@@ -2,6 +2,7 @@
 import { type PartType } from '@/data/parts';
 import {
   computed, ref, defineProps, defineEmits,
+  onUpdated,
 } from 'vue';
 
 type PatSelectorProps = {
@@ -16,6 +17,7 @@ const emit = defineEmits([
 ]);
 
 const selectedPartIndex = ref(0);
+const showPartInfo = ref(false);
 const selectedPart = computed(() => props.parts[selectedPartIndex.value]);
 
 function emitSelectedPart() {
@@ -37,27 +39,35 @@ function selectNextPart() {
     selectedPartIndex.value,
     props.parts.length,
   );
-  emitSelectedPart();
+  // emitSelectedPart();
 }
 function selectPreviousPart() {
   selectedPartIndex.value = getPreviousValidIndex(
     selectedPartIndex.value,
     props.parts.length,
   );
-  emitSelectedPart();
+  // emitSelectedPart();
 }
 
 emitSelectedPart();
+onUpdated(() => emitSelectedPart());
 
 </script>
 
 <template>
     <div class="part" :class="props.position">
         <img :alt="selectedPart.src"
-        :src="selectedPart.src" title="" />
+        :src="selectedPart.src" title="" @click="showPartInfo = !showPartInfo"/>
         <button class="prev-selector" @click="selectPreviousPart()"></button>
         <button class="next-selector" @click="selectNextPart()"></button>
         <span class="sale" v-show="selectedPart.onSale">Sale!</span>
+        <teleport to="#partInfo" v-if="showPartInfo">
+        <div>
+          <div>{{ selectedPart.cost }} {{ selectedPart.title }} {{ selectedPart.type }}</div>
+          <div>{{ selectedPart.description }}</div>
+          <hr />
+        </div>
+        </teleport>
     </div>
 </template>
 

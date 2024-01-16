@@ -4,6 +4,7 @@ import {
 } from 'vue';
 import { parts as availableParts, type PartType } from '../data/parts';
 import PartSelector from './PartSelector.vue';
+import CollapsibleSection from '../shared/CollapsibleSection.vue';
 
 type Robot = {
   head: PartType | null,
@@ -51,6 +52,7 @@ const addToCard = (robot: Robot) => {
 
 <template>
   <div class="container">
+    <div class="part-info" id="partInfo"></div>
     <div class="robot">
     <div class="top-row">
      <PartSelector
@@ -99,19 +101,21 @@ const addToCard = (robot: Robot) => {
       </table>
     </div>
     <div class="preview">
-      <div class="preview-content">
-        <div class="top-row">
-          <img alt="head" :src="selectedRobot.head?.src"/>
+      <CollapsibleSection>
+        <div class="preview-content">
+          <div class="top-row">
+            <img alt="head" :src="selectedRobot.head?.src"/>
+          </div>
+          <div class="middle-row">
+            <img alt="left" :src="selectedRobot.leftArm?.src" class="rotate-left"/>
+            <img alt="center" :src="selectedRobot.torso?.src"/>
+            <img alt="right" :src="selectedRobot.rightArm?.src" class="rotate-right"/>
+          </div>
+          <div class="bottom-row">
+            <img alt="base" :src="selectedRobot.base?.src"/>
+          </div>
         </div>
-        <div class="middle-row">
-          <img alt="left" :src="selectedRobot.leftArm?.src" class="rotate-left"/>
-          <img alt="center" :src="selectedRobot.torso?.src"/>
-          <img alt="right" :src="selectedRobot.rightArm?.src" class="rotate-right"/>
-        </div>
-        <div class="bottom-row">
-          <img alt="base" :src="selectedRobot.base?.src"/>
-        </div>
-      </div>
+      </CollapsibleSection>
       <button class="add-to-cart" @click="addToCard(selectedRobot)">Add to Cart</button>
     </div>
   </div>
@@ -124,10 +128,15 @@ const addToCard = (robot: Robot) => {
   align-items: flex-start;
   row-gap: 20px;
 }
+.part-info {
+  flex-grow: 0;
+  width: 210px;
+  padding: 5px;
+}
 .robot {
-  flex: 1 100%;
+  flex-grow: 2;
   padding-bottom: 20px;
-  border-bottom: 2px solid #aaa
+  border-left: 2px solid #aaa
 }
 .cart {
   order: 1;
