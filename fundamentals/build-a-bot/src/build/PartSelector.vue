@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { type PartType } from '@/data/parts';
+import router from '@/router';
 import {
   computed, ref, defineProps, defineEmits,
   onUpdated,
@@ -49,6 +50,10 @@ function selectPreviousPart() {
   // emitSelectedPart();
 }
 
+function showMorePartInfo() {
+  router.push('/parts');
+}
+
 emitSelectedPart();
 onUpdated(() => emitSelectedPart());
 
@@ -56,6 +61,7 @@ onUpdated(() => emitSelectedPart());
 
 <template>
     <div class="part" :class="props.position">
+        <span @click="showMorePartInfo()">...more</span>
         <img :alt="selectedPart.src"
         :src="selectedPart.src" title="" @click="showPartInfo = !showPartInfo"/>
         <button class="prev-selector" @click="selectPreviousPart()"></button>
@@ -68,7 +74,7 @@ onUpdated(() => emitSelectedPart());
           <hr />
         </div>
         </teleport>
-    </div>
+      </div>
 </template>
 
   <style scoped>

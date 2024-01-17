@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import HomePage from './home/HomePage.vue';
-import RobotBuilder from './build/RobotBuilder.vue';
-import SearchTerm from './search/SearchTerm.vue';
 
 </script>
 
@@ -10,16 +7,21 @@ import SearchTerm from './search/SearchTerm.vue';
     <nav>
       <ul>
         <li class="nav-item">
-          <img alt="built-a-bot" class="logo" src="./assets/build-a-bot-logo.png" />
-          Build-a-Bot
+          <router-link class="nav-link" :to="{name: 'Home'}" exact>
+            <img alt="built-a-bot" class="logo" src="./assets/build-a-bot-logo.png" />
+            Build-a-Bot
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{name: 'Build'}" exact>
+            Build
+          </router-link>
         </li>
       </ul>
     </nav>
   </header>
   <main>
-    <!-- <HomePage msg="Welcome to Your Vue.js + TypeScript App"/> -->
-    <RobotBuilder/>
-    <!-- <SearchTerm /> -->
+    <router-view />
   </main>
 </template>
 
@@ -58,6 +60,13 @@ main {
   padding: 5px 10px;
   font-size: 22px;
   border-right: 1px solid #bbb;
+}
+.nav-link {
+  text-decoration: none;
+  color: inherit
+}
+.router-link-active {
+  color: white
 }
 .logo {
   vertical-align: middle;

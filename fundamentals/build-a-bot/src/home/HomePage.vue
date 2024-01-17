@@ -16,7 +16,7 @@ const props = defineProps<HomePageProps>();
     </div>
     <div class="get-started">
       <p>{{ props.msg }}</p>
-      <a href="">Get started</a> building your first robot!
+      <router-link :to="{name: 'Build'}">Get started</router-link> building your first robot!
     </div>
   </div>
 </template>
