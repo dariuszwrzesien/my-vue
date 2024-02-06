@@ -20,9 +20,14 @@
       </ul>
     </nav>
   </header>
-  <main>
-    <router-view />
-  </main>
+  <div class="container">
+    <aside class="aside">
+      <router-view name="sidebar" />
+    </aside>
+    <main>
+      <router-view />
+    </main>
+  </div>
 </template>
 
 <style>
@@ -49,10 +54,10 @@ ul {
   -moz-osx-font-smoothing: grayscale;
 }
 main {
-  margin: 0 auto;
+  /* margin: 0 auto; */
   padding: 30px;
   background-color: white;
-  width: 1024px;
+  width: 964px;
   min-height: 300px;
 }
 .nav-item {
@@ -71,5 +76,16 @@ main {
 .logo {
   vertical-align: middle;
   height: 30px;
+}
+.container {
+  display: flex;
+  margin: 10px auto 0 auto;
+  justify-content: center;
+}
+.aside {
+  padding: 30px;
+  background-color: #aaa;
+  width: 100px;
+  min-height: 300px;
 }
 </style>

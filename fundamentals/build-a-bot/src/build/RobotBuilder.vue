@@ -2,6 +2,7 @@
 import {
   ref, onMounted, onUnmounted, onUpdated,
 } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
 import { parts as availableParts, type PartType } from '../data/parts';
 import PartSelector from './PartSelector.vue';
 import CollapsibleSection from '../shared/CollapsibleSection.vue';
@@ -16,18 +17,7 @@ type Robot = {
 
 type Cart = Robot & {totalCost: number}
 
-/**
- * Life cycle hooks
- */
-onMounted(() => {
-  console.log('the component is now mounted.');
-});
-onUpdated(() => {
-  console.log('the component is now updated.');
-});
-onUnmounted(() => {
-  console.log('the component is now unmounted.');
-});
+let addedToCard = false;
 
 const cart = ref([] as Cart[]);
 const selectedRobot = ref({
@@ -47,7 +37,31 @@ const addToCard = (robot: Robot) => {
     robot.base,
   ].reduce((acc, curr) => acc + (curr?.cost ?? 0), 0);
   cart.value.push({ ...robot, totalCost });
+  addedToCard = true;
 };
+
+/**
+ * Life cycle hooks
+ */
+onMounted(() => {
+  console.log('the component is now mounted.');
+});
+onUpdated(() => {
+  console.log('the component is now updated.');
+});
+onUnmounted(() => {
+  console.log('the component is now unmounted.');
+});
+onBeforeRouteLeave((to, from, next) => {
+  if (addedToCard) {
+    next(true);
+  } else {
+    /* eslint no-alert: 0 */
+    const confirmResponse = window.confirm('You have not added your robot to your cart, are you sure you want to leave?');
+    next(confirmResponse);
+  }
+});
+
 </script>
 
 <template>

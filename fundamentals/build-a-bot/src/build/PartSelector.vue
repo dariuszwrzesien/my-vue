@@ -51,7 +51,7 @@ function selectPreviousPart() {
 }
 
 function showMorePartInfo() {
-  router.push('/parts');
+  router.push({ name: 'Parts', params: { id: selectedPart.value.id, partType: selectedPart.value.type } });
 }
 
 emitSelectedPart();
