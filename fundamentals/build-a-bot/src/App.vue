@@ -1,5 +1,10 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { key } from './store';
 
+const store = useStore(key);
+const cart = computed(() => store.state.cart);
 </script>
 
 <template>
@@ -15,6 +20,11 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{name: 'Build'}" exact>
             Build
+          </router-link>
+        </li>
+        <li class="nav-item cart">
+          <router-link class="nav-link" to="/cart" exact>
+            Cart ({{cart.length}})
           </router-link>
         </li>
       </ul>
@@ -87,5 +97,9 @@ main {
   background-color: #aaa;
   width: 100px;
   min-height: 300px;
+}
+.nav-item.cart {
+  position: relative;
+  margin-left: auto;
 }
 </style>

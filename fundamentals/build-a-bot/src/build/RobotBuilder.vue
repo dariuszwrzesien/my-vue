@@ -3,6 +3,8 @@ import {
   ref, onMounted, onUnmounted, onUpdated,
 } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
+import { useStore } from 'vuex';
+import { key } from '../store';
 import { parts as availableParts, type PartType } from '../data/parts';
 import PartSelector from './PartSelector.vue';
 import CollapsibleSection from '../shared/CollapsibleSection.vue';
@@ -18,6 +20,8 @@ type Robot = {
 type Cart = Robot & {totalCost: number}
 
 let addedToCard = false;
+
+const store = useStore(key);
 
 const cart = ref([] as Cart[]);
 const selectedRobot = ref({
@@ -36,7 +40,8 @@ const addToCard = (robot: Robot) => {
     robot.rightArm,
     robot.base,
   ].reduce((acc, curr) => acc + (curr?.cost ?? 0), 0);
-  cart.value.push({ ...robot, totalCost });
+
+  store.commit('addRobotToCart', { ...robot, totalCost });
   addedToCard = true;
 };
 
@@ -96,23 +101,6 @@ onBeforeRouteLeave((to, from, next) => {
       @partSelected="(part: PartType) => selectedRobot.base = part"
     />
     </div>
-    </div>
-    <div class="cart">
-      <h1>Cart</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Robot</th>
-            <th class="cost">Cost</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(robot, index) in cart" :key="index" >
-            <td>{{robot?.head?.title}}</td>
-            <td class="cost">{{ robot.totalCost }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
     <div class="preview">
       <CollapsibleSection>

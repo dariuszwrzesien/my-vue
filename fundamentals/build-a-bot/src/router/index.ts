@@ -1,4 +1,5 @@
 import RobotBuilder from '@/build/RobotBuilder.vue';
+import ShoppingCart from '@/cart/ShoppingCart.vue';
 import HomePage from '@/home/HomePage.vue';
 import BrowsePart from '@/parts/BrowsePart.vue';
 import PartInfo from '@/parts/PartInfo.vue';
@@ -58,6 +59,11 @@ export default createRouter({
       const isValidId = Number.isInteger(Number(to.params.id));
       next(isValidId);
     },
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => ShoppingCart,
   }],
   history: createWebHistory(),
 });
